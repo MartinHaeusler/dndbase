@@ -1,0 +1,37 @@
+.itemTableContainer {
+  overflow: auto;
+  height: 500px;
+}
+/* .itemTableContainer thead th { position: sticky; top: 0; z-index: 1; } */
+/* .itemTableContainer tfoot th { position: sticky; bottom: 0; z-index: 1; } */
+
+.itemTableContainer thead {
+  position: sticky;
+  inset-block-start: 0;
+}
+
+.itemTableContainer tfoot {
+  position: sticky;
+  inset-block-end: 0;
+}
+
+/* Just common table stuff. Really. */
+.itemTableContainer > table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.itemTableContainer > th,
+td {
+  padding: 8px 16px;
+}
+.itemTableContainer > table > thead > tr > th {
+  background: #252a31;
+}
+
+.itemTableContainer table tfoot tr {
+  background: #252a31;
+}
+
+.searchInput {
+  margin: 20px 20px 10px 10px;
+}

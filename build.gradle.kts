@@ -19,8 +19,8 @@ repositories {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("io.github.microutils:kotlin-logging:3.0.5")
@@ -28,10 +28,10 @@ dependencies {
 	implementation("ch.qos.logback:logback-classic:1.4.11")
 	implementation("com.google.guava:guava:32.1.2-jre")
 	implementation("org.apache.commons:commons-csv:1.10.0")
-	implementation("org.webjars:bootstrap:5.3.1")
-	implementation("org.webjars:webjars-locator:0.47")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("io.strikt:strikt-core:0.34.1")
+
 }
 
 tasks.withType<KotlinCompile> {

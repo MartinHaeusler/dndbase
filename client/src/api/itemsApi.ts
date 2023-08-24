@@ -62,6 +62,7 @@ export const itemOrderBy = [
   "RARITY",
   "TYPE",
   "SUBTYPE",
+  "ATTUNEMENT",
 ] as const;
 export type ItemOrderBy = (typeof itemOrderBy)[number];
 

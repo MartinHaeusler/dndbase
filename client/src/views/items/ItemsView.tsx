@@ -1,22 +1,44 @@
 import {
   Button,
+  Classes,
+  Dialog,
+  DialogBody,
+  DialogFooter,
   HTMLTable,
+  InputGroup,
   MenuItem,
   Spinner,
-  Classes,
-  InputGroup,
 } from "@blueprintjs/core";
 import { ItemRenderer, Select } from "@blueprintjs/select";
 import {
-  getItemsForQuery,
+  faBookOpen,
+  faCoins,
+  faSignature,
+  faSort,
+  faSortDown,
+  faSortUp,
+  faStarHalfAlt,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
   GetItemsQuery,
   Item,
+  ItemOrderBy,
+  OrderDirection,
   PaginatedResponse,
+  getItemsForQuery,
 } from "api/itemsApi";
 import { int } from "api/typeAliases";
-import { useEffect, useState } from "react";
-import "./ItemView.css";
 import { useDebouncedEffect } from "hooks/useDebouncedEffect";
+import { useState } from "react";
+import ItemAttunementDisplay from "./ItemAttunementDisplay";
+import ItemRarityDisplay from "./ItemRarityDisplay";
+import ItemTypeDisplay from "./ItemTypeDisplay";
+import "./ItemsView.css";
+import PaginationControl from "./PaginationControl";
+import ItemPriceDisplay from "./PriceDisplay";
+import ItemDetailsDisplay from "./ItemDetailsDisplay";
 
 function ItemsView() {
   // the query we're firing to the server
@@ -24,6 +46,8 @@ function ItemsView() {
     query: "",
     pageSize: 20,
     pageIndex: 0,
+    orderBy: "NAME",
+    orderDirection: "ASCENDING",
   });
 
   // loading state for the query
@@ -53,6 +77,16 @@ function ItemsView() {
     500 // debounce delay
   );
 
+  const [currentItem, setCurrentItem] = useState<Item | null>(null);
+
+  function updateItemQuerySorting(columnId: ItemOrderBy, dir: OrderDirection) {
+    console.log(`Will now sort by ${columnId} ${dir}`);
+    setItemQuery({ ...itemQuery, orderBy: columnId, orderDirection: dir });
+  }
+
+  const currentOrderBy = itemQuery.orderBy ?? "NAME";
+  const currentOrderDirection = itemQuery.orderDirection ?? "ASCENDING";
+
   return (
     <div>
       <InputGroup
@@ -68,6 +102,27 @@ function ItemsView() {
         }
       />
 
+      <Dialog
+        className={Classes.DARK}
+        title={`Item Details: ${currentItem?.name}`}
+        isOpen={currentItem !== null}
+        icon="info-sign"
+        onClose={() => setCurrentItem(null)}
+      >
+        <DialogBody>
+          <ItemDetailsDisplay item={currentItem} />
+        </DialogBody>
+        <DialogFooter
+          actions={
+            <Button
+              intent="primary"
+              text="Close"
+              onClick={() => setCurrentItem(null)}
+            />
+          }
+        />
+      </Dialog>
+
       {isLoading ? (
         <Spinner intent="primary" />
       ) : (
@@ -75,33 +130,76 @@ function ItemsView() {
           <HTMLTable interactive={true} striped={true}>
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Rarity</th>
-                <th>Attunement</th>
-                <th>Source</th>
-                <th>Price</th>
-                <th>Weight</th>
-                <th>Sold By</th>
+                <SortableTableHeader<ItemOrderBy>
+                  columnId="NAME"
+                  currentSortColumnId={currentOrderBy}
+                  sortDirection={currentOrderDirection}
+                  onClick={updateItemQuerySorting}
+                >
+                  <FontAwesomeIcon icon={faSignature} /> Name
+                </SortableTableHeader>
+                <SortableTableHeader<ItemOrderBy>
+                  columnId="TYPE"
+                  currentSortColumnId={currentOrderBy}
+                  sortDirection={currentOrderDirection}
+                  onClick={updateItemQuerySorting}
+                >
+                  <FontAwesomeIcon icon={faBookOpen} /> Type
+                </SortableTableHeader>
+                <SortableTableHeader<ItemOrderBy>
+                  columnId="RARITY"
+                  currentSortColumnId={currentOrderBy}
+                  sortDirection={currentOrderDirection}
+                  onClick={updateItemQuerySorting}
+                >
+                  <FontAwesomeIcon icon={faStarHalfAlt} /> Rarity
+                </SortableTableHeader>
+                <SortableTableHeader<ItemOrderBy>
+                  columnId="ATTUNEMENT"
+                  currentSortColumnId={currentOrderBy}
+                  sortDirection={currentOrderDirection}
+                  onClick={updateItemQuerySorting}
+                >
+                  <FontAwesomeIcon icon={faUser} /> Attunement
+                </SortableTableHeader>
+                <SortableTableHeader<ItemOrderBy>
+                  columnId="PRICE"
+                  currentSortColumnId={currentOrderBy}
+                  sortDirection={currentOrderDirection}
+                  onClick={updateItemQuerySorting}
+                >
+                  <FontAwesomeIcon icon={faCoins} /> Price
+                </SortableTableHeader>
               </tr>
             </thead>
             <tbody>
               {itemData.pageContent.map((item) => (
-                <tr key={item.id}>
+                <tr
+                  key={item.id}
+                  onClick={() => {
+                    console.log("SELECTED ITEM: ", item);
+                    setCurrentItem(item);
+                  }}
+                >
                   <td>{item.name}</td>
-                  <td>{item.type}</td>
-                  <td>{item.rarity}</td>
-                  <td>{item.attunement}</td>
-                  <td>{item.source}</td>
-                  <td>{item.price}</td>
-                  <td>{item.weight}</td>
-                  <td>{item.merchants}</td>
+                  <td>
+                    <ItemTypeDisplay itemType={item.type} />
+                  </td>
+                  <td>
+                    <ItemRarityDisplay rarity={item.rarity} />
+                  </td>
+                  <td>
+                    <ItemAttunementDisplay attunement={item.attunement} />
+                  </td>
+                  <td>
+                    <ItemPriceDisplay value={item.price} />
+                  </td>
                 </tr>
               ))}
             </tbody>
             <tfoot>
               <tr>
-                <td colSpan={7}>
+                <td colSpan={3}>
                   <div style={{ width: "fit-content" }}>
                     <Select<int>
                       items={[10, 20, 50]}
@@ -126,7 +224,17 @@ function ItemsView() {
                     </Select>
                   </div>
                 </td>
-                <td>1408</td>
+                <td colSpan={2}>
+                  <PaginationControl
+                    currentPageIndex={itemQuery.pageIndex ?? 0}
+                    maxButtonsToDisplay={7}
+                    pageSize={itemQuery.pageSize ?? 20}
+                    totalEntries={itemData.totalCount}
+                    onChange={(newIndex) =>
+                      setItemQuery({ ...itemQuery, pageIndex: newIndex })
+                    }
+                  />
+                </td>
               </tr>
             </tfoot>
           </HTMLTable>
@@ -134,6 +242,55 @@ function ItemsView() {
       )}
     </div>
   );
+}
+
+type SortableTableHeaderProps<T> = React.PropsWithChildren & {
+  columnId: T;
+  currentSortColumnId: T;
+  sortDirection: OrderDirection;
+  onClick: (event: T, newDirection: OrderDirection) => void;
+};
+
+function SortableTableHeader<T>(props: SortableTableHeaderProps<T>) {
+  return (
+    <th
+      className="sortableTableHeader"
+      onClick={(e) => {
+        let newSortDirection: OrderDirection;
+        if (props.columnId !== props.currentSortColumnId) {
+          newSortDirection = "ASCENDING";
+        } else if (props.sortDirection === "ASCENDING") {
+          newSortDirection = "DESCENDING";
+        } else {
+          newSortDirection = "ASCENDING";
+        }
+        props.onClick(props.columnId, newSortDirection);
+      }}
+    >
+      {props.children}
+      <SortIcon
+        direction={props.sortDirection}
+        sortByThisColumn={props.currentSortColumnId === props.columnId}
+      />
+    </th>
+  );
+}
+
+type SortIconProps = {
+  sortByThisColumn: boolean;
+  direction: OrderDirection;
+};
+
+function SortIcon(props: SortIconProps) {
+  if (!props.sortByThisColumn) {
+    return <FontAwesomeIcon icon={faSort} style={{ float: "right" }} />;
+  }
+  switch (props.direction) {
+    case "ASCENDING":
+      return <FontAwesomeIcon icon={faSortUp} style={{ float: "right" }} />;
+    case "DESCENDING":
+      return <FontAwesomeIcon icon={faSortDown} style={{ float: "right" }} />;
+  }
 }
 
 const renderNumber: ItemRenderer<int> = (

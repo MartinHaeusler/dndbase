@@ -5,3 +5,7 @@
     rgba(37, 42, 49, 1) 400px
   );
 }
+
+.activeNavLink button span {
+  text-decoration: underline;
+}

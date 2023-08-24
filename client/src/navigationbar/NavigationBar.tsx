@@ -1,53 +1,66 @@
 import {
   Alignment,
-  AnchorButton,
+  Button,
   Classes,
-  Icon,
   Navbar,
   NavbarDivider,
   NavbarGroup,
   NavbarHeading,
 } from "@blueprintjs/core";
-import { Link } from "react-router-dom";
+import { faDAndD } from "@fortawesome/free-brands-svg-icons";
+import { faBox, faHome, faStore } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NavLink } from "react-router-dom";
 import "./NavigationBar.css";
 
 function NavigationBar() {
   return (
     <Navbar className={`mainNavigationBar ${Classes.DARK}`}>
       <NavbarGroup align={Alignment.LEFT}>
-        <NavbarHeading>
-          <Icon icon="flame" />
+        <NavbarHeading className="outline">
+          <FontAwesomeIcon
+            icon={faDAndD}
+            size="xl"
+            style={{ stroke: "black", strokeWidth: "10" }}
+          />
           <span style={{ fontWeight: "bold", marginLeft: "5px" }}>
-            D&amp;Dbase - Data and Tools for 5e
+            D&amp;DBase
           </span>
         </NavbarHeading>
         <NavbarDivider />
-        <Link to="/">
-          <AnchorButton
+        <NavLink
+          to="/"
+          className={({ isActive }) => (isActive ? "activeNavLink" : "")}
+        >
+          <Button
             className="bp5-minimal"
-            icon="home"
+            icon={<FontAwesomeIcon icon={faHome} />}
             text="Home"
             // href="/"
           />
-        </Link>
-        <Link to="/items">
-          <AnchorButton
+        </NavLink>
+        <NavLink
+          to="/items"
+          className={({ isActive }) => (isActive ? "activeNavLink" : "")}
+        >
+          <Button
             className="bp5-minimal"
-            icon="cube"
+            icon={<FontAwesomeIcon icon={faBox} />}
             text="Items"
             // href="/items"
           />
-        </Link>
-        <Link to="/merchants">
-          <AnchorButton
+        </NavLink>
+        <NavLink
+          to="/merchants"
+          className={({ isActive }) => (isActive ? "activeNavLink" : "")}
+        >
+          <Button
             className="bp5-minimal"
-            icon="shop"
+            icon={<FontAwesomeIcon icon={faStore} />}
             text="Merchants"
             // href="/merchants"
           />
-        </Link>
-        <NavbarDivider />
-        <div style={{ width: 20 }} />
+        </NavLink>
       </NavbarGroup>
     </Navbar>
   );

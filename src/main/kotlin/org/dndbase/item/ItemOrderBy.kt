@@ -8,6 +8,7 @@ enum class ItemOrderBy {
     RARITY,
     TYPE,
     SUBTYPE,
+    ATTUNEMENT,
 
     ;
 
@@ -15,12 +16,12 @@ enum class ItemOrderBy {
     companion object {
 
         private val NAME_COMPARATOR = compareBy<Item> { it.name }
-        private val PRICE_COMPARATOR = compareBy<Item> { it.price ?: 0.0 }
-        private val WEIGHT_COMPARATOR = compareBy<Item> { it.weight ?: 0.0 }
-        private val RARITY_COMPARATOR = compareBy<Item> { it.rarity }
-        private val TYPE_COMPARATOR = compareBy<Item> { it.type }
-        private val SUB_TYPE_COMPARATOR = compareBy<Item> { it.subtype ?: "" }
-
+        private val PRICE_COMPARATOR = compareBy<Item> { it.price ?: 0.0 }.thenBy { it.name }
+        private val WEIGHT_COMPARATOR = compareBy<Item> { it.weight ?: 0.0 }.thenBy { it.name }
+        private val RARITY_COMPARATOR = compareBy<Item> { it.rarity }.thenBy { it.name }
+        private val TYPE_COMPARATOR = compareBy<Item> { it.type }.thenBy { it.name }
+        private val SUB_TYPE_COMPARATOR = compareBy<Item> { it.subtype ?: "" }.thenBy { it.name }
+        private val ATTUNEMENT_COMPARATOR = compareBy<Item> { it.attunement }.thenBy { it.name }
     }
 
     val comparator: Comparator<Item>
@@ -32,6 +33,7 @@ enum class ItemOrderBy {
                 RARITY -> RARITY_COMPARATOR
                 TYPE -> TYPE_COMPARATOR
                 SUBTYPE -> SUB_TYPE_COMPARATOR
+                ATTUNEMENT -> ATTUNEMENT_COMPARATOR
             }
         }
 

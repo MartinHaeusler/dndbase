@@ -35,3 +35,15 @@ td {
 .searchInput {
   margin: 20px 20px 10px 10px;
 }
+
+.sortableTableHeader {
+  user-select: none;
+}
+
+.sortableTableHeader:hover {
+  filter: brightness(1.5);
+}
+
+.sortableTableHeader:active {
+  filter: brightness(0.85);
+}

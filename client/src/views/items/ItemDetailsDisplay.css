@@ -1,0 +1,19 @@
+.itemDetailsDisplay .tagCloud {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.itemDetailsDisplay h1 {
+  margin-top: 0px;
+}
+
+.itemDetailsDisplay .itemDescription {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+}

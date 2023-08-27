@@ -7,7 +7,7 @@ import org.apache.commons.csv.CSVParser
 import org.springframework.stereotype.Service
 
 @Service
-class ItemService() {
+class ItemService {
 
     companion object {
 
@@ -28,38 +28,27 @@ class ItemService() {
     }
 
     fun getItemsForQuery(
-        query: String?,
-        orderBy: ItemOrderBy,
-        orderDirection: OrderDirection,
-        pageSize: Int,
-        pageIndex: Int,
+        query: GetItemsQuery,
     ): PaginatedResponse<Item> {
-        val matchingItems = if (query.isNullOrBlank()) {
+        val matchingItems = if (query.filter.matchesAllItems) {
             allItems
         } else {
-            allItems.filter { it.matchesQuery(query) }
+            allItems.filter(query.filter::matches)
         }
-        val matchingItemsSorted = when (orderDirection) {
-            OrderDirection.ASCENDING -> matchingItems.sortedWith(orderBy.comparator)
-            OrderDirection.DESCENDING -> matchingItems.sortedWith(orderBy.comparator.reversed())
+        val matchingItemsSorted = when (query.orderDirection) {
+            OrderDirection.ASCENDING -> matchingItems.sortedWith(query.orderBy.comparator)
+            OrderDirection.DESCENDING -> matchingItems.sortedWith(query.orderBy.comparator.reversed())
         }
 
-        val pageContent = matchingItemsSorted.asSequence().drop(pageIndex * pageSize).take(pageSize).toList()
+        val pageContent = matchingItemsSorted.asSequence()
+            .drop(query.pageIndex * query.pageSize)
+            .take(query.pageSize)
+            .toList()
         return PaginatedResponse(
             totalCount = matchingItems.size,
             pageContent = pageContent
         )
     }
 
-    private fun Item.matchesQuery(query: String): Boolean {
-        return this.name.contains(query, ignoreCase = true) ||
-            this.description?.contains(query, ignoreCase = true) ?: false ||
-            this.extra?.contains(query, ignoreCase = true) ?: false ||
-            this.type.toString().contains(query, ignoreCase = true) ||
-            this.subtype?.contains(query, ignoreCase = true) ?: false ||
-            this.rarity.toString().contains(query, ignoreCase = true) ||
-            this.price.toString().contains(query, ignoreCase = true) ||
-            this.source?.contains(query, ignoreCase = true) ?: false
-    }
 }
 

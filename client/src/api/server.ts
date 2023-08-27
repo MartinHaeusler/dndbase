@@ -43,14 +43,6 @@ export async function fetchPut(path: string, body?: any, parameters: any = {}) {
   );
 }
 
-function ensurePrefix(s: string, prefix: string): string {
-  if (s.startsWith(prefix)) {
-    return s;
-  } else {
-    return prefix + s;
-  }
-}
-
 function removePrefix(s: string, prefix: string): string {
   if (s.startsWith(prefix)) {
     return s.substring(prefix.length);

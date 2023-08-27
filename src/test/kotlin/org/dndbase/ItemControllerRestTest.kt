@@ -37,9 +37,27 @@ class ItemControllerRestTest {
     }
 
     @Test
+    fun canGetItemsByMerchants() {
+        val paginatedResponse = getItemsViaREST(merchants = setOf(Item.Merchant.WEAPONSMITH, Item.Merchant.BARD))
+        expectThat(paginatedResponse) {
+            get { this.totalCount }.isGreaterThan(0)
+            get { this.pageContent }.isNotEmpty().and {
+                any {
+                    get { merchants }.contains(Item.Merchant.WEAPONSMITH)
+                    get { merchants }.doesNotContain(Item.Merchant.BARD)
+                }
+                any {
+                    get { merchants }.contains(Item.Merchant.BARD)
+                    get { merchants }.doesNotContain(Item.Merchant.WEAPONSMITH)
+                }
+            }
+        }
+    }
+
+    @Test
     fun canGetItemsWithQueryViaREST() {
-        val paginatedResponse = getItemsViaREST(query = "Ring of Protection")
-        expectThat(paginatedResponse){
+        val paginatedResponse = getItemsViaREST(nameContains = "Ring of Protection")
+        expectThat(paginatedResponse) {
             get { this.totalCount }.isEqualTo(1)
             get { this.pageContent }.single().and {
                 get { this.name }.isEqualTo("Ring of Protection")
@@ -47,27 +65,62 @@ class ItemControllerRestTest {
         }
     }
 
+    @Test
+    fun canGetAllWeaponsViaREST() {
+        val paginatedResponse = getItemsViaREST(types = setOf(Item.Type.WEAPON))
+        expectThat(paginatedResponse) {
+            get { this.totalCount }.isGreaterThan(0)
+            get { this.pageContent }.isNotEmpty().and {
+                all { get { type }.isEqualTo(Item.Type.WEAPON) }
+            }
+        }
+    }
+
     private fun getItemsViaREST(
-        query: String? = null,
+        nameContains: String? = null,
+        merchants: Set<Item.Merchant> = emptySet(),
+        rarities: Set<Item.Rarity> = emptySet(),
+        types: Set<Item.Type> = emptySet(),
+        costMin: Double? = null,
+        costMax: Double? = null,
         pageIndex: Int? = null,
         pageSize: Int? = null,
         orderBy: ItemOrderBy? = null,
         orderDirection: OrderDirection? = null,
     ): PaginatedResponse<Item> {
-        val urlQuery = if ((query ?: pageIndex ?: pageSize ?: orderBy ?: orderDirection) != null) {
-            val argsList = listOfNotNull(
-                query?.let { "query={query}" },
-                pageIndex?.let { "pageIndex={pageIndex}" },
-                pageSize?.let { "pageSize={pageSize}" },
-                orderBy?.let { "orderBy={orderBy}" },
-                orderDirection?.let { "orderDirection={orderDirection}" }
-            )
-            "?${argsList.joinToString(separator = "&")}"
-        } else {
-            ""
-        }
-        val urlArgs = listOfNotNull(query, pageIndex, pageSize, orderBy, orderDirection)
-        val responseJson = mockMvc.get("/items${urlQuery}", *urlArgs.toTypedArray()).andExpect { status { isOk() } }.andReturn().response.contentAsString
+        val argsList = listOfNotNull(
+            nameContains?.let { "nameContains={nameContains}" },
+            merchants.takeIf { it.isNotEmpty() }?.let { "merchants={merchants}" },
+            rarities.takeIf { it.isNotEmpty() }?.let { "rarities={rarities}" },
+            types.takeIf { it.isNotEmpty() }?.let { "types={types}" },
+            costMin?.let { "costMin={costMin}" },
+            costMax?.let { "costMax={costMax}" },
+            pageIndex?.let { "pageIndex={pageIndex}" },
+            pageSize?.let { "pageSize={pageSize}" },
+            orderBy?.let { "orderBy={orderBy}" },
+            orderDirection?.let { "orderDirection={orderDirection}" }
+        ).filter { it.isNotBlank() }
+
+        val urlQuery =
+            if (argsList.isNotEmpty()) {
+                "?${argsList.joinToString(separator = "&")}"
+            } else {
+                ""
+            }
+        val urlArgs = listOfNotNull(
+            nameContains,
+            merchants.takeIf { it.isNotEmpty() },
+            rarities.takeIf { it.isNotEmpty() },
+            types.takeIf { it.isNotEmpty() },
+            costMin,
+            costMax,
+            pageIndex,
+            pageSize,
+            orderBy,
+            orderDirection
+        )
+        val fullURL = "/items${urlQuery}"
+        val responseJson = mockMvc.get(fullURL, *urlArgs.toTypedArray()).andExpect { status { isOk() } }.andReturn().response.contentAsString
         return objectMapper.readValue<PaginatedResponse<Item>>(responseJson)
     }
 

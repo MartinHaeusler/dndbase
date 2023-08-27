@@ -1,5 +1,5 @@
 import { fetchGet } from "./server";
-import { int } from "./typeAliases";
+import { double, int } from "./typeAliases";
 
 export type Item = {
   id: string;
@@ -70,11 +70,16 @@ export const orderDirection = ["ASCENDING", "DESCENDING"] as const;
 export type OrderDirection = (typeof orderDirection)[number];
 
 export type GetItemsQuery = {
-  query?: string;
   pageIndex?: int;
   pageSize?: int;
   orderBy?: ItemOrderBy;
   orderDirection?: OrderDirection;
+  nameContains?: string;
+  types?: ItemType[];
+  merchants?: MerchantType[];
+  rarities?: ItemRarity[];
+  costMin?: double;
+  costMax?: double;
 };
 
 export type PaginatedResponse<T> = {

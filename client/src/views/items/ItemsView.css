@@ -32,10 +32,6 @@ td {
   background: #252a31;
 }
 
-.searchInput {
-  margin: 20px 20px 10px 10px;
-}
-
 .sortableTableHeader {
   user-select: none;
 }
@@ -46,4 +42,33 @@ td {
 
 .sortableTableHeader:active {
   filter: brightness(0.85);
+}
+
+.itemsView .tableFilters {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.itemsView .tableFilters .searchInput {
+  flex-grow: 1;
+}
+
+.itemsView .tableFilters .raritySelect {
+  width: 10em;
+}
+
+.itemsView .tableFilters .merchantTypeSelect {
+  width: 12em;
+}
+
+.itemsView .tableFilters .itemTypeSelect {
+  width: 12em;
 }

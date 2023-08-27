@@ -31,19 +31,21 @@ import {
 } from "api/itemsApi";
 import { int } from "api/typeAliases";
 import { useDebouncedEffect } from "hooks/useDebouncedEffect";
-import { useState } from "react";
+import React, { useState } from "react";
 import ItemAttunementDisplay from "./ItemAttunementDisplay";
+import ItemDetailsDisplay from "./ItemDetailsDisplay";
 import ItemRarityDisplay from "./ItemRarityDisplay";
 import ItemTypeDisplay from "./ItemTypeDisplay";
 import "./ItemsView.css";
 import PaginationControl from "./PaginationControl";
 import ItemPriceDisplay from "./PriceDisplay";
-import ItemDetailsDisplay from "./ItemDetailsDisplay";
+import ItemRaritySelect from "./ItemRaritySelect";
+import ItemMerchantSelect from "./ItemMerchantSelect";
+import ItemTypeSelect from "./ItemTypeSelect";
 
 function ItemsView() {
   // the query we're firing to the server
   const [itemQuery, setItemQuery] = useState<GetItemsQuery>({
-    query: "",
     pageSize: 20,
     pageIndex: 0,
     orderBy: "NAME",
@@ -88,19 +90,73 @@ function ItemsView() {
   const currentOrderDirection = itemQuery.orderDirection ?? "ASCENDING";
 
   return (
-    <div>
-      <InputGroup
-        className="searchInput"
-        large={true}
-        placeholder="Search in Table..."
-        small={false}
-        leftIcon="search"
-        type="search"
-        value={itemQuery.query}
-        onChange={(event) =>
-          setItemQuery({ ...itemQuery, query: event.currentTarget.value })
-        }
-      />
+    <div className="itemsView">
+      <div className="tableFilters">
+        <InputGroup
+          className="searchInput"
+          large={true}
+          placeholder="Search in Table..."
+          small={false}
+          leftIcon="search"
+          type="search"
+          value={itemQuery.nameContains ?? ""}
+          onChange={(event) =>
+            setItemQuery({
+              ...itemQuery,
+              pageIndex: 0,
+              nameContains: event.currentTarget.value,
+            })
+          }
+        />
+        <ItemTypeSelect
+          value={itemQuery.types?.at(0)}
+          onChange={(selectedType) => {
+            if (!selectedType) {
+              // create a copy of "itemQuery" without the "types" field
+              const { types, ...newItemQuery } = itemQuery;
+              setItemQuery(newItemQuery);
+            } else {
+              setItemQuery({
+                ...itemQuery,
+                pageIndex: 0,
+                types: [selectedType],
+              });
+            }
+          }}
+        />
+        <ItemRaritySelect
+          value={itemQuery.rarities?.at(0)}
+          onChange={(selectedRarity) => {
+            if (!selectedRarity) {
+              // create a copy of "itemQuery" without the "rarities" field
+              const { rarities, ...newItemQuery } = itemQuery;
+              setItemQuery(newItemQuery);
+            } else {
+              setItemQuery({
+                ...itemQuery,
+                pageIndex: 0,
+                rarities: [selectedRarity],
+              });
+            }
+          }}
+        />
+        <ItemMerchantSelect
+          value={itemQuery.merchants?.at(0)}
+          onChange={(selectedMerchantType) => {
+            if (!selectedMerchantType) {
+              // create a copy of "itemQuery" without the "merchants" field
+              const { merchants, ...newItemQuery } = itemQuery;
+              setItemQuery(newItemQuery);
+            } else {
+              setItemQuery({
+                ...itemQuery,
+                pageIndex: 0,
+                merchants: [selectedMerchantType],
+              });
+            }
+          }}
+        />
+      </div>
 
       <Dialog
         className={Classes.DARK}
@@ -306,7 +362,6 @@ const renderNumber: ItemRenderer<int> = (
       active={modifiers.active}
       disabled={modifiers.disabled}
       key={value}
-      // label={""}
       onClick={handleClick}
       onFocus={handleFocus}
       roleStructure="listoption"

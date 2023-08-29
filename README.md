@@ -16,5 +16,6 @@ The server is a Spring Boot project written in Kotlin. The client is a React app
 
 ```
 cd client
+yarn install
 yarn start
 ```

@@ -1,19 +1,19 @@
 package org.dndbase.item
 
 class GetItemsQuery(
-    val orderBy: ItemOrderBy,
-    val orderDirection: OrderDirection,
-    val pageSize: Int,
-    val pageIndex: Int,
-    val filter: ItemFilter,
+    val orderBy: ItemOrderBy = ItemOrderBy.NAME,
+    val orderDirection: OrderDirection = OrderDirection.DESCENDING,
+    val pageSize: Int = Int.MAX_VALUE,
+    val pageIndex: Int = 0,
+    val filter: ItemFilter = ItemFilter(),
 )
 
 class ItemFilter(
-    val nameContains: String?,
-    val types: Set<Item.Type>,
-    val merchants: Set<Item.Merchant>,
-    val rarities: Set<Item.Rarity>,
-    val costRange: ClosedFloatingPointRange<Double>?,
+    val nameContains: String? = null,
+    val types: Set<Item.Type> = emptySet(),
+    val merchants: Set<Item.Merchant> = emptySet(),
+    val rarities: Set<Item.Rarity> = emptySet(),
+    val costRange: ClosedFloatingPointRange<Double>? = null,
 ) {
 
     val matchesAllItems: Boolean

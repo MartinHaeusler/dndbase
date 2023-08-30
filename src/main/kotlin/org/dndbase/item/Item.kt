@@ -46,6 +46,13 @@ class Item(
             }
         }
 
+        val isSingleUse: Boolean
+            get(){
+                return when(this){
+                    POTION, SCROLL -> true
+                    else -> false
+                }
+            }
     }
 
     enum class Rarity {

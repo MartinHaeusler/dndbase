@@ -29,7 +29,8 @@ class StoreService(
         repeat(numberOfSpecialOffers){
             offers.addNotNull(buildOffer(config, allAvailableItems, true))
         }
-        return offers
+        // sort special offers to the front
+        return offers.sortedWith(compareByDescending<Offer> { it.isSpecialOffer }.thenBy { it.item.name })
     }
 
     private fun buildOffer(config: StoreConfig, allAvailableItems: MutableList<Item>, isSpecialOffer: Boolean): Offer? {

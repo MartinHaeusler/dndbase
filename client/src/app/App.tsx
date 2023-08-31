@@ -10,11 +10,14 @@ function App() {
   return (
     <div className={"app " + Classes.DARK}>
       <NavigationBar />
-      <Routes>
-        <Route path="/" element={<HomeView />} />
-        <Route path="/items" element={<ItemsView />} />
-        <Route path="/merchants" element={<StoresView />} />
-      </Routes>
+      <div className="appContent">
+        <Routes>
+          <Route path="/" element={<HomeView />} />
+          <Route path="/items" element={<ItemsView />} />
+          <Route path="/merchants" element={<StoresView />} />
+        </Routes>
+      </div>
+      <div className="appFooter">I'm the footer</div>
     </div>
   );
 }

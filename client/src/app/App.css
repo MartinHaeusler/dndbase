@@ -5,6 +5,22 @@
 
 .app {
   background-color: #252a31;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app .appContent {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow: hidden;
+}
+
+.app .appFooter {
+  flex-grow: 0;
+  background-color: lightslategray;
 }
 
 .outline {

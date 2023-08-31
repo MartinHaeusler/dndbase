@@ -10,6 +10,13 @@
     padding: 5px;
 }
 
+.storesForm input.submitButton {
+    width: 15em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+
 .storesForm label .select {
     width: 14.3em;
 }
@@ -39,4 +46,81 @@
 
 .validationError {
     color: rgb(250, 153, 156);
+}
+
+.inventoryList {
+    overflow-y: scroll;
+}
+
+.shopName {
+    text-align: center;
+}
+
+.offer .heading {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.2em;
+}
+
+.offer {
+    margin-bottom: 2em;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+.offer .detailsRow {
+    display: flex;
+    gap: 0.5em;
+    flex-direction: column;
+}
+
+
+.offer .detailsRow .detailsStandardRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.offer .detailsRow .detailsTagCloud {
+    display: flex;
+    gap: 0.5em;
+}
+
+.offer .detailsRow .extraTagCloud {
+    display: flex;
+    gap: 0.5em;
+}
+
+.offer .description {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    white-space: pre-wrap;
+}
+
+.resolvedStoreView {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.resolvedStoreView .inventoryList {
+    flex-grow: 1;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.storesView {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+
+.storesView .buttonBar {
+    display: flex;
+    margin: 1em;
+    flex-direction: row;
+    justify-content: space-between;
 }

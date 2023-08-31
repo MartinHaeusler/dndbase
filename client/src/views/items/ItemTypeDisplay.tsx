@@ -14,61 +14,60 @@ type ItemTypeDisplayProps = {
 };
 
 function ItemTypeDisplay(props: ItemTypeDisplayProps) {
-  switch (props.itemType) {
+  return <div><ItemTypeIcon type={props.itemType} />&nbsp;<ItemTypeName type={props.itemType} /></div>
+}
+
+export type ItemTypeIconProps = {
+  type: ItemType
+}
+
+export function ItemTypeIcon(props: ItemTypeIconProps): JSX.Element {
+  switch (props.type) {
     case "ARMOR":
-      return (
-        <div>
-          <Icon icon="shield" /> Armor
-        </div>
-      );
+      return <Icon icon="shield" />;
     case "POTION":
-      return (
-        <div>
-          <FontAwesomeIcon icon={faFlask} /> Potion
-        </div>
-      );
+      return <FontAwesomeIcon icon={faFlask} />;
     case "RING":
-      return (
-        <div>
-          <FontAwesomeIcon icon={faRing} /> Ring
-        </div>
-      );
+      return <FontAwesomeIcon icon={faRing} />;
     case "ROD":
-      return (
-        <div>
-          <Icon icon="slash" /> Rod
-        </div>
-      );
+      return <Icon icon="slash" />;
     case "SCROLL":
-      return (
-        <div>
-          <FontAwesomeIcon icon={faScroll} /> Scroll
-        </div>
-      );
+      return <FontAwesomeIcon icon={faScroll} />;
     case "STAFF":
-      return (
-        <div>
-          <FontAwesomeIcon icon={faCandyCane} /> Staff
-        </div>
-      );
+      return <FontAwesomeIcon icon={faCandyCane} />;
     case "WAND":
-      return (
-        <div>
-          <FontAwesomeIcon icon={faWandMagicSparkles} /> Wand
-        </div>
-      );
+      return <FontAwesomeIcon icon={faWandMagicSparkles} />;
     case "WEAPON":
-      return (
-        <div>
-          <Icon icon="ninja" /> Weapon
-        </div>
-      );
+      return <Icon icon="ninja" />;
     case "WONDROUS_ITEM":
-      return (
-        <div>
-          <Icon icon="crown" /> Wondrous Item
-        </div>
-      );
+      return <Icon icon="crown" />;
+  }
+}
+
+type ItemTypeNameProps = {
+  type: ItemType
+}
+
+function ItemTypeName(props: ItemTypeNameProps): JSX.Element {
+  switch (props.type) {
+    case "ARMOR":
+      return <span>Armor</span>;
+    case "POTION":
+      return <span>Potion</span>;
+    case "RING":
+      return <span>Ring</span>;
+    case "ROD":
+      return <span>Rod</span>;
+    case "SCROLL":
+      return <span>Scroll</span>;
+    case "STAFF":
+      return <span>Staff</span>;
+    case "WAND":
+      return <span>Wand</span>;
+    case "WEAPON":
+      return <span>Weapon</span>;
+    case "WONDROUS_ITEM":
+      return <span>Wondrous Item</span>;
   }
 }
 

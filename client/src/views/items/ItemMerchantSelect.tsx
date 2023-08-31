@@ -5,6 +5,7 @@ import { int } from "api/typeAliases";
 import ItemMerchantDisplay from "./ItemMerchantsDisplay";
 
 export type ItemMerchantSelectProps = {
+  className?: string;
   value: MerchantType | undefined;
   onChange: (newMerchant: MerchantType | undefined) => void;
 };
@@ -12,6 +13,7 @@ export type ItemMerchantSelectProps = {
 function ItemMerchantSelect(props: ItemMerchantSelectProps): JSX.Element {
   return (
     <Select<int>
+      className={props.className}
       items={generateIndicesArray()}
       filterable={false}
       itemRenderer={renderMerchantTypeForSelect}

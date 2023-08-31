@@ -1,0 +1,42 @@
+.storesForm label {
+    display: block;
+}
+
+.storesForm label input {
+    width: 15em;
+    background-color: #383e47;
+    border: 1px solid #4c525a;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+.storesForm label .select {
+    width: 14.3em;
+}
+
+.storesForm label .select button {
+    width: 100%;
+}
+
+.storesForm label input::placeholder {
+    color: #5f6b7c;
+}
+
+.storesForm label span {
+    display: block;
+}
+
+/* .storesForm label {
+    margin-bottom: 1em;
+} */
+
+.storesForm {
+    margin: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.validationError {
+    color: rgb(250, 153, 156);
+}

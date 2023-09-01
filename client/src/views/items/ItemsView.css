@@ -34,6 +34,7 @@ td {
 
 .sortableTableHeader {
   user-select: none;
+  min-width: 4em;
 }
 
 .sortableTableHeader:hover {

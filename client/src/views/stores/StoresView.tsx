@@ -14,6 +14,8 @@ import ItemAttunementDisplay from 'views/items/ItemAttunementDisplay';
 import ItemSubTypeDisplay from 'views/items/ItemSubTypeDisplay';
 import ItemExtraDisplay from 'views/items/ItemExtraDisplay';
 import classNames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDice } from '@fortawesome/free-solid-svg-icons';
 
 type FormProps = {
   storeName: string;
@@ -186,6 +188,7 @@ function InventoryList(props: InventoryListProps) {
 type OfferProps = {
   offer: Offer;
   onChange?: (offer: Offer) => void;
+  onReroll?: (offer: Offer) => void;
 };
 
 function OfferDisplay(props: OfferProps) {
@@ -238,6 +241,9 @@ function OfferDisplay(props: OfferProps) {
           <Tag round={true}>
             <ItemSourceDisplay source={props.offer.item.source} />
           </Tag>
+        </div>
+        <div className="actionButtons">
+          <Button icon={<FontAwesomeIcon icon={faDice} />}>Reroll</Button>
         </div>
       </div>
       <div className="description">{props.offer.item.description}</div>

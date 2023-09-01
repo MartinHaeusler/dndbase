@@ -1,11 +1,12 @@
 .mainNavigationBar {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 0, 0, 1) 0%,
-    rgba(37, 42, 49, 1) 400px
-  );
+  background: linear-gradient(90deg, rgba(255, 0, 0, 1) 0%, rgba(37, 42, 49, 1) 400px);
 }
 
 .activeNavLink button span {
   text-decoration: underline;
+  display: inline-block;
+}
+
+.inactiveNavLink button span {
+  display: none;
 }

@@ -1,36 +1,23 @@
-import {
-  Alignment,
-  Button,
-  Classes,
-  Navbar,
-  NavbarDivider,
-  NavbarGroup,
-  NavbarHeading,
-} from "@blueprintjs/core";
-import { faDAndD } from "@fortawesome/free-brands-svg-icons";
-import { faBox, faHome, faStore } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NavLink } from "react-router-dom";
-import "./NavigationBar.css";
+import { Alignment, Button, Classes, Navbar, NavbarDivider, NavbarGroup, NavbarHeading } from '@blueprintjs/core';
+import { faDAndD } from '@fortawesome/free-brands-svg-icons';
+import { faBox, faHome, faStore } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { NavLink } from 'react-router-dom';
+import './NavigationBar.css';
+import classNames from 'classnames';
 
 function NavigationBar() {
   return (
     <Navbar className={`mainNavigationBar ${Classes.DARK}`}>
       <NavbarGroup align={Alignment.LEFT}>
         <NavbarHeading className="outline">
-          <FontAwesomeIcon
-            icon={faDAndD}
-            size="xl"
-            style={{ stroke: "black", strokeWidth: "10" }}
-          />
-          <span style={{ fontWeight: "bold", marginLeft: "5px" }}>
-            D&amp;DBase
-          </span>
+          <FontAwesomeIcon icon={faDAndD} size="xl" style={{ stroke: 'black', strokeWidth: '10' }} />
+          <span style={{ fontWeight: 'bold', marginLeft: '5px' }}>D&amp;DBase</span>
         </NavbarHeading>
         <NavbarDivider />
         <NavLink
           to="/"
-          className={({ isActive }) => (isActive ? "activeNavLink" : "")}
+          className={({ isActive }) => classNames({ activeNavLink: isActive, inactiveNavLink: !isActive })}
         >
           <Button
             className="bp5-minimal"
@@ -41,7 +28,7 @@ function NavigationBar() {
         </NavLink>
         <NavLink
           to="/items"
-          className={({ isActive }) => (isActive ? "activeNavLink" : "")}
+          className={({ isActive }) => classNames({ activeNavLink: isActive, inactiveNavLink: !isActive })}
         >
           <Button
             className="bp5-minimal"
@@ -52,7 +39,7 @@ function NavigationBar() {
         </NavLink>
         <NavLink
           to="/merchants"
-          className={({ isActive }) => (isActive ? "activeNavLink" : "")}
+          className={({ isActive }) => classNames({ activeNavLink: isActive, inactiveNavLink: !isActive })}
         >
           <Button
             className="bp5-minimal"

@@ -8,8 +8,8 @@ import {
   InputGroup,
   MenuItem,
   Spinner,
-} from "@blueprintjs/core";
-import { ItemRenderer, Select } from "@blueprintjs/select";
+} from '@blueprintjs/core';
+import { ItemRenderer, Select } from '@blueprintjs/select';
 import {
   faBookOpen,
   faCoins,
@@ -19,37 +19,35 @@ import {
   faSortUp,
   faStarHalfAlt,
   faUser,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  GetItemsQuery,
-  Item,
-  ItemOrderBy,
-  OrderDirection,
-  PaginatedResponse,
-  getItemsForQuery,
-} from "api/itemsApi";
-import { int } from "api/typeAliases";
-import { useDebouncedEffect } from "hooks/useDebouncedEffect";
-import React, { useState } from "react";
-import ItemAttunementDisplay from "./ItemAttunementDisplay";
-import ItemDetailsDisplay from "./ItemDetailsDisplay";
-import ItemRarityDisplay from "./ItemRarityDisplay";
-import ItemTypeDisplay from "./ItemTypeDisplay";
-import "./ItemsView.css";
-import PaginationControl from "./PaginationControl";
-import ItemPriceDisplay from "./PriceDisplay";
-import ItemRaritySelect from "./ItemRaritySelect";
-import ItemMerchantSelect from "./ItemMerchantSelect";
-import ItemTypeSelect from "./ItemTypeSelect";
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { GetItemsQuery, Item, ItemOrderBy, OrderDirection, PaginatedResponse, getItemsForQuery } from 'api/itemsApi';
+import { int } from 'api/typeAliases';
+import { useDebouncedEffect } from 'hooks/useDebouncedEffect';
+import React, { useState } from 'react';
+import ItemAttunementDisplay from './ItemAttunementDisplay';
+import ItemDetailsDisplay from './ItemDetailsDisplay';
+import ItemRarityDisplay from './ItemRarityDisplay';
+import ItemTypeDisplay, { ItemTypeIcon } from './ItemTypeDisplay';
+import './ItemsView.css';
+import PaginationControl from './PaginationControl';
+import ItemPriceDisplay from './PriceDisplay';
+import ItemRaritySelect from './ItemRaritySelect';
+import ItemMerchantSelect from './ItemMerchantSelect';
+import ItemTypeSelect from './ItemTypeSelect';
+import useWindowDimensions from 'hooks/useWindowDimensions';
+import classNames from 'classnames';
+
+/** If the window width goes below this value, the table will switch to compact view. */
+const COMPACT_WINDOW_WIDTH = 900;
 
 function ItemsView() {
   // the query we're firing to the server
   const [itemQuery, setItemQuery] = useState<GetItemsQuery>({
     pageSize: 20,
     pageIndex: 0,
-    orderBy: "NAME",
-    orderDirection: "ASCENDING",
+    orderBy: 'NAME',
+    orderDirection: 'ASCENDING',
   });
 
   // loading state for the query
@@ -76,8 +74,11 @@ function ItemsView() {
       fetchData();
     },
     [itemQuery], // re-evaluate when this changes
-    500 // debounce delay
+    500, // debounce delay
   );
+
+  const windowWidth = useWindowDimensions().width;
+  const useCompactLayout = windowWidth < COMPACT_WINDOW_WIDTH;
 
   const [currentItem, setCurrentItem] = useState<Item | null>(null);
 
@@ -86,8 +87,8 @@ function ItemsView() {
     setItemQuery({ ...itemQuery, orderBy: columnId, orderDirection: dir });
   }
 
-  const currentOrderBy = itemQuery.orderBy ?? "NAME";
-  const currentOrderDirection = itemQuery.orderDirection ?? "ASCENDING";
+  const currentOrderBy = itemQuery.orderBy ?? 'NAME';
+  const currentOrderDirection = itemQuery.orderDirection ?? 'ASCENDING';
 
   return (
     <div className="itemsView">
@@ -99,7 +100,7 @@ function ItemsView() {
           small={false}
           leftIcon="search"
           type="search"
-          value={itemQuery.nameContains ?? ""}
+          value={itemQuery.nameContains ?? ''}
           onChange={(event) =>
             setItemQuery({
               ...itemQuery,
@@ -168,15 +169,7 @@ function ItemsView() {
         <DialogBody>
           <ItemDetailsDisplay item={currentItem} />
         </DialogBody>
-        <DialogFooter
-          actions={
-            <Button
-              intent="primary"
-              text="Close"
-              onClick={() => setCurrentItem(null)}
-            />
-          }
-        />
+        <DialogFooter actions={<Button intent="primary" text="Close" onClick={() => setCurrentItem(null)} />} />
       </Dialog>
 
       {isLoading ? (
@@ -200,7 +193,7 @@ function ItemsView() {
                   sortDirection={currentOrderDirection}
                   onClick={updateItemQuerySorting}
                 >
-                  <FontAwesomeIcon icon={faBookOpen} /> Type
+                  <FontAwesomeIcon icon={faBookOpen} /> {useCompactLayout ? '' : 'Type'}
                 </SortableTableHeader>
                 <SortableTableHeader<ItemOrderBy>
                   columnId="RARITY"
@@ -208,7 +201,7 @@ function ItemsView() {
                   sortDirection={currentOrderDirection}
                   onClick={updateItemQuerySorting}
                 >
-                  <FontAwesomeIcon icon={faStarHalfAlt} /> Rarity
+                  <FontAwesomeIcon icon={faStarHalfAlt} /> {useCompactLayout ? '' : 'Rarity'}
                 </SortableTableHeader>
                 <SortableTableHeader<ItemOrderBy>
                   columnId="ATTUNEMENT"
@@ -216,7 +209,7 @@ function ItemsView() {
                   sortDirection={currentOrderDirection}
                   onClick={updateItemQuerySorting}
                 >
-                  <FontAwesomeIcon icon={faUser} /> Attunement
+                  <FontAwesomeIcon icon={faUser} /> {useCompactLayout ? '' : 'Attunement'}
                 </SortableTableHeader>
                 <SortableTableHeader<ItemOrderBy>
                   columnId="PRICE"
@@ -224,7 +217,7 @@ function ItemsView() {
                   sortDirection={currentOrderDirection}
                   onClick={updateItemQuerySorting}
                 >
-                  <FontAwesomeIcon icon={faCoins} /> Price
+                  <FontAwesomeIcon icon={faCoins} /> {useCompactLayout ? '' : 'Price'}
                 </SortableTableHeader>
               </tr>
             </thead>
@@ -233,13 +226,13 @@ function ItemsView() {
                 <tr
                   key={item.id}
                   onClick={() => {
-                    console.log("SELECTED ITEM: ", item);
+                    console.log('SELECTED ITEM: ', item);
                     setCurrentItem(item);
                   }}
                 >
                   <td>{item.name}</td>
                   <td>
-                    <ItemTypeDisplay itemType={item.type} />
+                    {useCompactLayout ? <ItemTypeIcon type={item.type} /> : <ItemTypeDisplay itemType={item.type} />}
                   </td>
                   <td>
                     <ItemRarityDisplay rarity={item.rarity} />
@@ -256,7 +249,7 @@ function ItemsView() {
             <tfoot>
               <tr>
                 <td colSpan={3}>
-                  <div style={{ width: "fit-content" }}>
+                  <div style={{ width: 'fit-content' }}>
                     <Select<int>
                       items={[10, 20, 50]}
                       filterable={false}
@@ -269,14 +262,9 @@ function ItemsView() {
                         matchTargetWidth: true,
                         popoverClassName: Classes.DARK,
                       }}
-                      onItemSelect={(item) =>
-                        setItemQuery({ ...itemQuery, pageSize: item })
-                      }
+                      onItemSelect={(item) => setItemQuery({ ...itemQuery, pageSize: item })}
                     >
-                      <Button
-                        text={`Items on Page: ${itemQuery.pageSize}`}
-                        rightIcon="caret-down"
-                      />
+                      <Button text={`Items on Page: ${itemQuery.pageSize}`} rightIcon="caret-down" />
                     </Select>
                   </div>
                 </td>
@@ -286,9 +274,7 @@ function ItemsView() {
                     maxButtonsToDisplay={7}
                     pageSize={itemQuery.pageSize ?? 20}
                     totalEntries={itemData.totalCount}
-                    onChange={(newIndex) =>
-                      setItemQuery({ ...itemQuery, pageIndex: newIndex })
-                    }
+                    onChange={(newIndex) => setItemQuery({ ...itemQuery, pageIndex: newIndex })}
                   />
                 </td>
               </tr>
@@ -301,6 +287,7 @@ function ItemsView() {
 }
 
 type SortableTableHeaderProps<T> = React.PropsWithChildren & {
+  className?: string;
   columnId: T;
   currentSortColumnId: T;
   sortDirection: OrderDirection;
@@ -310,24 +297,21 @@ type SortableTableHeaderProps<T> = React.PropsWithChildren & {
 function SortableTableHeader<T>(props: SortableTableHeaderProps<T>) {
   return (
     <th
-      className="sortableTableHeader"
+      className={classNames('sortableTableHeader', props.className)}
       onClick={(e) => {
         let newSortDirection: OrderDirection;
         if (props.columnId !== props.currentSortColumnId) {
-          newSortDirection = "ASCENDING";
-        } else if (props.sortDirection === "ASCENDING") {
-          newSortDirection = "DESCENDING";
+          newSortDirection = 'ASCENDING';
+        } else if (props.sortDirection === 'ASCENDING') {
+          newSortDirection = 'DESCENDING';
         } else {
-          newSortDirection = "ASCENDING";
+          newSortDirection = 'ASCENDING';
         }
         props.onClick(props.columnId, newSortDirection);
       }}
     >
       {props.children}
-      <SortIcon
-        direction={props.sortDirection}
-        sortByThisColumn={props.currentSortColumnId === props.columnId}
-      />
+      <SortIcon direction={props.sortDirection} sortByThisColumn={props.currentSortColumnId === props.columnId} />
     </th>
   );
 }
@@ -339,20 +323,17 @@ type SortIconProps = {
 
 function SortIcon(props: SortIconProps) {
   if (!props.sortByThisColumn) {
-    return <FontAwesomeIcon icon={faSort} style={{ float: "right" }} />;
+    return <FontAwesomeIcon icon={faSort} style={{ float: 'right' }} />;
   }
   switch (props.direction) {
-    case "ASCENDING":
-      return <FontAwesomeIcon icon={faSortUp} style={{ float: "right" }} />;
-    case "DESCENDING":
-      return <FontAwesomeIcon icon={faSortDown} style={{ float: "right" }} />;
+    case 'ASCENDING':
+      return <FontAwesomeIcon icon={faSortUp} style={{ float: 'right' }} />;
+    case 'DESCENDING':
+      return <FontAwesomeIcon icon={faSortDown} style={{ float: 'right' }} />;
   }
 }
 
-const renderNumber: ItemRenderer<int> = (
-  value,
-  { handleClick, handleFocus, modifiers, query }
-) => {
+const renderNumber: ItemRenderer<int> = (value, { handleClick, handleFocus, modifiers, query }) => {
   if (!modifiers.matchesPredicate) {
     return null;
   }

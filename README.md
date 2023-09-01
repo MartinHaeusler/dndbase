@@ -29,3 +29,18 @@ yarn start
 The executable will be a `*.jar` file located in `/build/libs`.
 This artifact can be run with `java -jar <filename>` and includes
 both the server and the client.
+
+## Creating a docker image
+
+```shell
+ ./gradlew bootBuildImage
+```
+
+## Publishing
+
+(Requires GCloud Authentication)
+
+```shell
+docker tag dndbase:0.0.1-SNAPSHOT europe-west3-docker.pkg.dev/dndbase/dndbase/dndbase:latest
+docker push europe-west3-docker.pkg.dev/dndbase/dndbase/dndbase
+```

@@ -50,32 +50,25 @@ tasks.withType<Test> {
 }
 
 node {
-    download = true // download nodeJS if it's not present on the system
+    // download nodeJS if it's not present on the system
+    download = true
+    // specify the root directory for our client project (where "package.json" is located)
     nodeProjectDir = file("${project.projectDir}/client")
 }
 
 val buildClient = tasks.create<YarnTask>("buildClient") {
+    // to build the client, the only argument we need to pass to "yarn" is the task
+    // name to execute, which is "build". The final command will therefore be:
+    //
+    // yarn build
+    //
     args = listOf("build")
 }
 
-val cleanClientResources = tasks.create<Delete>("cleanClientResources") {
-    delete("${project.projectDir}/src/main/resources/META-INF/resources")
+tasks.bootJar.configure {
+    dependsOn += buildClient
+    this.metaInf {
+        from("${project.projectDir}/client/build")
+        into("resources")
+    }
 }
-
-val includeClientInResources = tasks.create<Copy>("includeClientInResources") {
-    dependsOn(buildClient, cleanClientResources)
-    from("${project.projectDir}/client/build")
-    destinationDir = file("${project.projectDir}/src/main/resources/META-INF/resources")
-}
-
-tasks.processResources.configure {
-    dependsOn += includeClientInResources
-}
-
-//tasks.withType<BootJar>(){
-//    dependsOn += includeClientInResources
-//}
-//
-//tasks.withType<BootWar>(){
-//    dependsOn += includeClientInResources
-//}

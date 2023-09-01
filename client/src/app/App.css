@@ -1,7 +1,7 @@
-@import "normalize.css";
-@import "@blueprintjs/core/lib/css/blueprint.css";
-@import "@blueprintjs/select/lib/css/blueprint-select.css";
-@import "@blueprintjs/icons/lib/css/blueprint-icons.css";
+@import 'normalize.css';
+@import '@blueprintjs/core/lib/css/blueprint.css';
+@import '@blueprintjs/select/lib/css/blueprint-select.css';
+@import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 
 .app {
   background-color: #252a31;
@@ -24,6 +24,28 @@
 }
 
 .outline {
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
-    1px 1px 0 #000;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+@media print {
+  body {
+    margin: 0;
+    color: #000;
+    background-color: #fff;
+  }
+
+  .noPrint {
+    display: none !important;
+  }
+
+  .app {
+    margin: 0;
+    color: #000;
+    background-color: #fff;
+  }
+
+  .app .appContent {
+    display: block;
+    overflow: visible;
+  }
 }

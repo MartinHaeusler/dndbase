@@ -1,3 +1,17 @@
+.storesView {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.storesView .buttonBar {
+  display: flex;
+  margin: 1em;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .storesForm label {
   display: block;
 }
@@ -109,20 +123,6 @@
   overflow-y: auto;
 }
 
-.storesView {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.storesView .buttonBar {
-  display: flex;
-  margin: 1em;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
 .offer .specialOfferToggle {
   user-select: none;
   cursor: pointer;
@@ -136,4 +136,18 @@
 
 .offer .disableSpecialOffer {
   border: 1px solid rgba(0, 0, 0, 0);
+}
+
+@media print {
+  .storesView {
+    display: block;
+    overflow: visible;
+  }
+  .inventoryList {
+    overflow-y: visible;
+
+    .offer {
+      break-inside: avoid;
+    }
+  }
 }

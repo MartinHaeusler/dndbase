@@ -10,6 +10,7 @@ class StoreConfig(
     val specialOfferPriceModifier: Double,
     val priceModifier: Double,
     val merchantType: Item.Merchant,
+    val excludeItems: Set<String>,
 ) {
 
     init {

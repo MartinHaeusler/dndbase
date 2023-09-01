@@ -15,7 +15,11 @@ class StoreService(
     fun getStoreInventory(config: StoreConfig): List<Offer> {
         val allAvailableItems = itemService.getItemsForQuery(
             GetItemsQuery(
-                filter = ItemFilter(merchants = setOf(config.merchantType), costRange = 0.0..9_999_999.0)
+                filter = ItemFilter(
+                    merchants = setOf(config.merchantType),
+                    costRange = 0.0..9_999_999.0,
+                    idNotWithin = config.excludeItems,
+                )
             )
         ).pageContent.toMutableList()
 

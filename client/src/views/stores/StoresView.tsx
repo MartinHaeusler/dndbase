@@ -1,21 +1,21 @@
-import ItemMerchantSelect from 'views/items/ItemMerchantSelect';
-import './StoresView.css';
-import { useForm, Controller } from 'react-hook-form';
-import { MerchantType } from 'api/itemsApi';
-import { int } from 'api/typeAliases';
-import { Button, Classes, Icon, Tag } from '@blueprintjs/core';
-import { Offer, getOffersForShop } from 'api/storesApi';
-import { useState } from 'react';
-import ItemPriceDisplay from 'views/items/PriceDisplay';
-import ItemRarityDisplay from 'views/items/ItemRarityDisplay';
-import ItemTypeDisplay, { ItemTypeIcon } from 'views/items/ItemTypeDisplay';
-import ItemSourceDisplay from 'views/items/ItemSourceDisplay';
-import ItemAttunementDisplay from 'views/items/ItemAttunementDisplay';
-import ItemSubTypeDisplay from 'views/items/ItemSubTypeDisplay';
-import ItemExtraDisplay from 'views/items/ItemExtraDisplay';
-import classNames from 'classnames';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Tag } from '@blueprintjs/core';
 import { faDice } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { GetItemsQuery, MerchantType } from 'api/itemsApi';
+import { Offer, OfferRequest, getOffersForShop } from 'api/storesApi';
+import { int } from 'api/typeAliases';
+import classNames from 'classnames';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import ItemAttunementDisplay from 'views/items/ItemAttunementDisplay';
+import ItemExtraDisplay from 'views/items/ItemExtraDisplay';
+import ItemMerchantSelect from 'views/items/ItemMerchantSelect';
+import ItemRarityDisplay from 'views/items/ItemRarityDisplay';
+import ItemSourceDisplay from 'views/items/ItemSourceDisplay';
+import ItemSubTypeDisplay from 'views/items/ItemSubTypeDisplay';
+import { ItemTypeIcon } from 'views/items/ItemTypeDisplay';
+import ItemPriceDisplay from 'views/items/PriceDisplay';
+import './StoresView.css';
 
 type FormProps = {
   storeName: string;
@@ -26,12 +26,7 @@ type FormProps = {
   maxNumberOfSpecialOffers: int;
   priceModifier: int;
   specialOfferPriceModifier: int;
-};
-
-type InventoryListProps = {
-  shopName: string;
-  offers: Offer[];
-  onChange?: (newProps: InventoryListProps) => void;
+  excludeItem: string[];
 };
 
 function StoresView() {
@@ -49,8 +44,31 @@ function StoresView() {
     getOffersForShop(formData).then((offers) => {
       setState({
         shopName: formData.storeName,
+        query: formData,
         offers: offers,
       });
+    });
+  }
+
+  function reroll(itemIndex: int) {
+    getOffersForShop({
+      storeName: state?.shopName ?? '',
+      maxNumberOfItems: 1,
+      minNumberOfItems: 1,
+      maxNumberOfSpecialOffers: 0,
+      minNumberOfSpecialOffers: 0,
+      priceModifier: state?.query.priceModifier ?? 1.0,
+      specialOfferPriceModifier: state?.query.specialOfferPriceModifier ?? 0.8,
+      storeType: state?.query.storeType ?? 'GENERAL',
+      excludeItem: state?.offers?.map((offer) => offer.item.id) ?? [],
+    }).then((fetchedOffers) => {
+      const oldOffers = state?.offers ?? [];
+      if (!state || oldOffers.length < itemIndex + 1 || fetchedOffers.length <= 0) {
+        return;
+      }
+      const newOffers = [...oldOffers];
+      newOffers[itemIndex] = { ...fetchedOffers[0], isSpecialOffer: oldOffers[itemIndex].isSpecialOffer };
+      setState({ ...state, offers: newOffers });
     });
   }
 
@@ -58,8 +76,12 @@ function StoresView() {
     <div className="storesView">
       {state ? (
         <>
-          <InventoryList {...state} onChange={(newProps) => setState(newProps)} />
-          <div className="buttonBar">
+          <InventoryList
+            {...state}
+            onChange={(newProps) => setState(newProps)}
+            onReroll={(offer, index) => reroll(index)}
+          />
+          <div className={classNames('buttonBar', 'noPrint')}>
             <Button icon="circle-arrow-left" onClick={() => setState(undefined)}>
               Back
             </Button>
@@ -160,6 +182,14 @@ function StoresView() {
   );
 }
 
+type InventoryListProps = {
+  shopName: string;
+  offers: Offer[];
+  query: OfferRequest;
+  onChange?: (newProps: InventoryListProps) => void;
+  onReroll?: (offer: Offer, offerIndex: int) => void;
+};
+
 function InventoryList(props: InventoryListProps) {
   return (
     <>
@@ -177,6 +207,9 @@ function InventoryList(props: InventoryListProps) {
               newOffers[index] = newOffer;
               const newProps = { ...props, offers: newOffers };
               props.onChange(newProps);
+            }}
+            onReroll={() => {
+              props.onReroll && props.onReroll(offer, index);
             }}
           />
         ))}
@@ -242,8 +275,13 @@ function OfferDisplay(props: OfferProps) {
             <ItemSourceDisplay source={props.offer.item.source} />
           </Tag>
         </div>
-        <div className="actionButtons">
-          <Button icon={<FontAwesomeIcon icon={faDice} />}>Reroll</Button>
+        <div className={classNames('actionButtons', 'noPrint')}>
+          <Button
+            icon={<FontAwesomeIcon icon={faDice} />}
+            onClick={() => props.onReroll && props.onReroll(props.offer)}
+          >
+            Reroll
+          </Button>
         </div>
       </div>
       <div className="description">{props.offer.item.description}</div>
@@ -263,6 +301,7 @@ function OfferTypeToggle(props: OfferTypeToggleProps) {
       className={classNames(
         'specialOfferToggle',
         { disableSpecialOffer: props.isSpecialOffer },
+        { noPrint: !props.isSpecialOffer },
         { enableSpecialOffer: !props.isSpecialOffer },
       )}
       intent={props.isSpecialOffer ? 'warning' : 'none'}

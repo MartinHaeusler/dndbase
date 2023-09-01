@@ -14,6 +14,7 @@ class ItemFilter(
     val merchants: Set<Item.Merchant> = emptySet(),
     val rarities: Set<Item.Rarity> = emptySet(),
     val costRange: ClosedFloatingPointRange<Double>? = null,
+    val idNotWithin: Set<String> = emptySet(),
 ) {
 
     val matchesAllItems: Boolean
@@ -26,6 +27,9 @@ class ItemFilter(
         }
 
     fun matches(item: Item): Boolean {
+        if(item.id in idNotWithin){
+            return false
+        }
         if (!nameContains.isNullOrBlank() && !item.name.contains(nameContains, ignoreCase = true)) {
             return false
         }

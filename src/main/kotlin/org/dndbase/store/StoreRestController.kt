@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class StoreRestController(
-    private val storeService: StoreService
+    private val storeService: StoreService,
 ) {
 
     @ResponseBody
@@ -21,6 +21,7 @@ class StoreRestController(
         @RequestParam("specialOfferPriceModifier", defaultValue = "0.85") specialOfferPriceModifier: Double,
         @RequestParam("priceModifier", defaultValue = "1.0") priceModifier: Double,
         @RequestParam("merchantType", defaultValue = "GENERAL") merchantType: Item.Merchant,
+        @RequestParam("excludeItem", required = false) excludeItem: Set<String>?,
     ): List<Offer> {
         val config = StoreConfig(
             minNumberOfItems = minNumberOfItems,
@@ -30,6 +31,7 @@ class StoreRestController(
             specialOfferPriceModifier = specialOfferPriceModifier,
             priceModifier = priceModifier,
             merchantType = merchantType,
+            excludeItems = excludeItem ?: emptySet()
         )
         return storeService.getStoreInventory(config)
     }

@@ -8,7 +8,7 @@ import classNames from 'classnames';
 
 function NavigationBar() {
   return (
-    <Navbar className={`mainNavigationBar ${Classes.DARK}`}>
+    <Navbar className={classNames('mainNavigationBar', 'noPrint', Classes.DARK)}>
       <NavbarGroup align={Alignment.LEFT}>
         <NavbarHeading className="outline">
           <FontAwesomeIcon icon={faDAndD} size="xl" style={{ stroke: 'black', strokeWidth: '10' }} />

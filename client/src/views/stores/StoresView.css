@@ -1,36 +1,35 @@
 .storesForm label {
-    display: block;
+  display: block;
 }
 
 .storesForm label input {
-    width: 15em;
-    background-color: #383e47;
-    border: 1px solid #4c525a;
-    border-radius: 4px;
-    padding: 5px;
+  width: 15em;
+  background-color: #383e47;
+  border: 1px solid #4c525a;
+  border-radius: 4px;
+  padding: 5px;
 }
 
 .storesForm input.submitButton {
-    width: 15em;
-    margin-top: 1em;
-    margin-bottom: 1em;
+  width: 15em;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 
-
 .storesForm label .select {
-    width: 14.3em;
+  width: 14.3em;
 }
 
 .storesForm label .select button {
-    width: 100%;
+  width: 100%;
 }
 
 .storesForm label input::placeholder {
-    color: #5f6b7c;
+  color: #5f6b7c;
 }
 
 .storesForm label span {
-    display: block;
+  display: block;
 }
 
 /* .storesForm label {
@@ -38,89 +37,102 @@
 } */
 
 .storesForm {
-    margin: 1em;
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
+  margin: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .validationError {
-    color: rgb(250, 153, 156);
+  color: rgb(250, 153, 156);
 }
 
 .inventoryList {
-    overflow-y: scroll;
+  overflow-y: scroll;
 }
 
 .shopName {
-    text-align: center;
+  text-align: center;
 }
 
 .offer .heading {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.2em;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.2em;
 }
 
 .offer {
-    margin-bottom: 2em;
-    margin-left: 2em;
-    margin-right: 2em;
+  margin-bottom: 2em;
+  margin-left: 2em;
+  margin-right: 2em;
 }
 
 .offer .detailsRow {
-    display: flex;
-    gap: 0.5em;
-    flex-direction: column;
+  display: flex;
+  gap: 0.5em;
+  flex-direction: column;
 }
 
-
 .offer .detailsRow .detailsStandardRow {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .offer .detailsRow .detailsTagCloud {
-    display: flex;
-    gap: 0.5em;
+  display: flex;
+  gap: 0.5em;
 }
 
 .offer .detailsRow .extraTagCloud {
-    display: flex;
-    gap: 0.5em;
+  display: flex;
+  gap: 0.5em;
 }
 
 .offer .description {
-    display: block;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    white-space: pre-wrap;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
 }
 
 .resolvedStoreView {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .resolvedStoreView .inventoryList {
-    flex-grow: 1;
-    height: 100%;
-    overflow-y: auto;
+  flex-grow: 1;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .storesView {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-
 .storesView .buttonBar {
-    display: flex;
-    margin: 1em;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  margin: 1em;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.offer .specialOfferToggle {
+  user-select: none;
+  cursor: pointer;
+}
+
+.offer .enableSpecialOffer {
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid #4c525a;
+  color: white;
+}
+
+.offer .disableSpecialOffer {
+  border: 1px solid rgba(0, 0, 0, 0);
 }

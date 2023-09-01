@@ -4,7 +4,8 @@ import { int } from "./typeAliases"
 
 export type Offer = {
     item: Item,
-    offeredPrice: int,
+    regularOfferPrice: int,
+    specialOfferPrice: int,
     offeredQuantity: int,
     isSpecialOffer: boolean,
 }

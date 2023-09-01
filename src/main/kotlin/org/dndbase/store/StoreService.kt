@@ -26,7 +26,7 @@ class StoreService(
         repeat(numberOfOffers) {
             offers.addNotNull(buildOffer(config, allAvailableItems, false))
         }
-        repeat(numberOfSpecialOffers){
+        repeat(numberOfSpecialOffers) {
             offers.addNotNull(buildOffer(config, allAvailableItems, true))
         }
         // sort special offers to the front
@@ -40,14 +40,10 @@ class StoreService(
         val itemIndex = allAvailableItems.indices.random()
         val item = allAvailableItems[itemIndex]
         allAvailableItems.removeAt(itemIndex)
-        val priceMod = if (isSpecialOffer) {
-            config.specialOfferPriceModifier
-        } else {
-            config.priceModifier
-        }
         return Offer(
             item = item,
-            offeredPrice = (item.price!! * priceMod * Random.nextDouble(0.9, 1.10)).toInt(),
+            regularOfferPrice = computeOfferPrice(item.price, config.priceModifier),
+            specialOfferPrice = computeOfferPrice(item.price, config.specialOfferPriceModifier),
             offeredQuantity = if (item.type.isSingleUse) {
                 Random.nextInt(1, 5)
             } else {
@@ -55,6 +51,10 @@ class StoreService(
             },
             isSpecialOffer = isSpecialOffer,
         )
+    }
+
+    private fun computeOfferPrice(basePrice: Double?, modifier: Double, variance: Double = 0.1): Int {
+        return (basePrice!! * modifier * Random.nextDouble(1.0 - variance, 1.0 + variance)).toInt()
     }
 
     private fun <T> MutableCollection<T>.addNotNull(element: T?): Boolean {

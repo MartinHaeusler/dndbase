@@ -4,7 +4,8 @@ import org.dndbase.item.Item
 
 class Offer(
     val item: Item,
-    val offeredPrice: Int,
+    val regularOfferPrice: Int,
+    val specialOfferPrice: Int,
     val offeredQuantity: Int,
     val isSpecialOffer: Boolean
 )

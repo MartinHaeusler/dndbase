@@ -85,7 +85,14 @@ function StoresView() {
             <Button icon="circle-arrow-left" onClick={() => setState(undefined)}>
               Back
             </Button>
-            <Button icon="print">Print</Button>
+            <Button
+              icon="print"
+              onClick={() => {
+                window.print();
+              }}
+            >
+              Print
+            </Button>
           </div>
         </>
       ) : (

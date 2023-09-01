@@ -1,14 +1,16 @@
-import { Item } from "api/itemsApi";
-import ItemTypeDisplay from "./ItemTypeDisplay";
-import ItemAttunementDisplay from "./ItemAttunementDisplay";
-import ItemPriceDisplay from "./PriceDisplay";
-import { Tag } from "@blueprintjs/core";
-import ItemRarityDisplay from "./ItemRarityDisplay";
-import "./ItemDetailsDisplay.css";
-import ItemSubTypeDisplay from "./ItemSubTypeDisplay";
-import ItemExtraDisplay from "./ItemExtraDisplay";
-import ItemMerchantsDisplay from "./ItemMerchantsDisplay";
-import ItemSourceDisplay from "./ItemSourceDisplay";
+import { Item } from 'api/itemsApi';
+import ItemTypeDisplay from './ItemTypeDisplay';
+import ItemAttunementDisplay from './ItemAttunementDisplay';
+import ItemPriceDisplay from './PriceDisplay';
+import { Tag } from '@blueprintjs/core';
+import ItemRarityDisplay from './ItemRarityDisplay';
+import './ItemDetailsDisplay.css';
+import ItemSubTypeDisplay from './ItemSubTypeDisplay';
+import ItemExtraDisplay from './ItemExtraDisplay';
+import ItemMerchantsDisplay from './ItemMerchantsDisplay';
+import ItemSourceDisplay from './ItemSourceDisplay';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 
 export type ItemDetailsDisplayProps = {
   item: Item | null | undefined;
@@ -55,6 +57,16 @@ function ItemDetailsDisplay(props: ItemDetailsDisplayProps) {
         </Tag>
       </div>
       <span className="itemDescription">{item.description}</span>
+      <span className="itemFeedback">
+        <a
+          href={`mailto:${encodeURIComponent('feedback.dndbase@gmail.com')}?subject=${encodeURIComponent(
+            `Item Data on '${item.name}' (ID: ${item.id})`,
+          )}&body=${encodeURIComponent("Please specify what's wrong or missing:")}`}
+        >
+          <FontAwesomeIcon icon={faQuestionCircle} />
+          &nbsp; Report wrong or missing information
+        </a>
+      </span>
     </div>
   );
 }

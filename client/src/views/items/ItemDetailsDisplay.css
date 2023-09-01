@@ -17,3 +17,8 @@
   margin-bottom: 10px;
   white-space: pre-wrap;
 }
+
+.itemDetailsDisplay .itemFeedback {
+  display: block;
+  text-align: right;
+}

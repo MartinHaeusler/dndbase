@@ -96,94 +96,98 @@ function StoresView() {
           </div>
         </>
       ) : (
-        <form className="storesForm" onSubmit={handleSubmit(onSubmit)}>
-          <label>
-            <span>Store Name:</span>
-            <input type="text" placeholder="Store Name" required={true} {...register('storeName')} />
-            {errors.storeName?.type === 'required' && (
-              <p className="validationError" role="alert">
-                Please specify a store name
-              </p>
-            )}
-          </label>
-          <label>
-            <span>Store Type:</span>
-            <Controller
-              control={control}
-              name="storeType"
-              rules={{ required: true }}
-              render={({ field }) => (
-                <ItemMerchantSelect className="select" value={field.value} onChange={field.onChange} />
+        <div className="storeFormView">
+          <h1>Store Generator</h1>
+          <p>Please tell us something about the store below, then click "Generate Inventory"!</p>
+          <form className="storesForm" onSubmit={handleSubmit(onSubmit)}>
+            <label>
+              <span>Store Name:</span>
+              <input type="text" placeholder="Store Name" required={true} {...register('storeName')} />
+              {errors.storeName?.type === 'required' && (
+                <p className="validationError" role="alert">
+                  Please specify a store name
+                </p>
               )}
-            />
-            {errors.storeType?.type === 'required' && (
-              <p className="validationError" role="alert">
-                Please select a store type
-              </p>
-            )}
-          </label>
-          <label>
-            <span>Number of Items (Min):</span>
-            <input
-              type="number"
-              defaultValue={5}
-              min={1}
-              max={50}
-              {...register('minNumberOfItems', { valueAsNumber: true })}
-            />
-          </label>
-          <label>
-            <span>Number of Items (Max):</span>
-            <input
-              type="number"
-              defaultValue={10}
-              min={1}
-              max={50}
-              {...register('maxNumberOfItems', { valueAsNumber: true })}
-            />
-          </label>
-          <label>
-            <span>Number of special offers (Min):</span>
-            <input
-              type="number"
-              defaultValue={1}
-              min={0}
-              max={50}
-              {...register('minNumberOfSpecialOffers', { valueAsNumber: true })}
-            />
-          </label>
-          <label>
-            <span>Number of special offers (Max):</span>
-            <input
-              type="number"
-              defaultValue={3}
-              min={0}
-              max={50}
-              {...register('maxNumberOfSpecialOffers', { valueAsNumber: true })}
-            />
-          </label>
-          <label>
-            <span>Price Modifier (in %):</span>
-            <input
-              type="number"
-              min={1}
-              max={1000}
-              defaultValue={100}
-              {...register('priceModifier', { valueAsNumber: true })}
-            />
-          </label>
-          <label>
-            <span>Special Offer Modifier (in %):</span>
-            <input
-              type="number"
-              min={1}
-              max={1000}
-              defaultValue={80}
-              {...register('specialOfferPriceModifier', { valueAsNumber: true })}
-            />
-          </label>
-          <input type="submit" className="submitButton" value="Generate Inventory" />
-        </form>
+            </label>
+            <label>
+              <span>Store Type:</span>
+              <Controller
+                control={control}
+                name="storeType"
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <ItemMerchantSelect className="select" value={field.value} onChange={field.onChange} />
+                )}
+              />
+              {errors.storeType?.type === 'required' && (
+                <p className="validationError" role="alert">
+                  Please select a store type
+                </p>
+              )}
+            </label>
+            <label>
+              <span>Number of Items (Min):</span>
+              <input
+                type="number"
+                defaultValue={5}
+                min={1}
+                max={50}
+                {...register('minNumberOfItems', { valueAsNumber: true })}
+              />
+            </label>
+            <label>
+              <span>Number of Items (Max):</span>
+              <input
+                type="number"
+                defaultValue={10}
+                min={1}
+                max={50}
+                {...register('maxNumberOfItems', { valueAsNumber: true })}
+              />
+            </label>
+            <label>
+              <span>Number of special offers (Min):</span>
+              <input
+                type="number"
+                defaultValue={1}
+                min={0}
+                max={50}
+                {...register('minNumberOfSpecialOffers', { valueAsNumber: true })}
+              />
+            </label>
+            <label>
+              <span>Number of special offers (Max):</span>
+              <input
+                type="number"
+                defaultValue={3}
+                min={0}
+                max={50}
+                {...register('maxNumberOfSpecialOffers', { valueAsNumber: true })}
+              />
+            </label>
+            <label>
+              <span>Price Modifier (in %):</span>
+              <input
+                type="number"
+                min={1}
+                max={1000}
+                defaultValue={100}
+                {...register('priceModifier', { valueAsNumber: true })}
+              />
+            </label>
+            <label>
+              <span>Special Offer Modifier (in %):</span>
+              <input
+                type="number"
+                min={1}
+                max={1000}
+                defaultValue={80}
+                {...register('specialOfferPriceModifier', { valueAsNumber: true })}
+              />
+            </label>
+            <input type="submit" className="submitButton" value="Generate Inventory" />
+          </form>
+        </div>
       )}
     </div>
   );

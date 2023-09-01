@@ -5,6 +5,10 @@
   overflow: hidden;
 }
 
+.storesView .storeFormView {
+  margin: 2em;
+}
+
 .storesView .buttonBar {
   display: flex;
   margin: 1em;

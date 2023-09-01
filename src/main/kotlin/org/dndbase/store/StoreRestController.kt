@@ -1,16 +1,20 @@
 package org.dndbase.store
 
 import org.dndbase.item.Item
+import org.dndbase.ratelimit.RateLimited
+import org.dndbase.ratelimit.RateLimiter
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
+
 
 @RestController
 class StoreRestController(
     private val storeService: StoreService,
 ) {
 
+    @RateLimited
     @ResponseBody
     @GetMapping("/store/inventory")
     fun getStoreInventory(
@@ -35,6 +39,5 @@ class StoreRestController(
         )
         return storeService.getStoreInventory(config)
     }
-
 
 }

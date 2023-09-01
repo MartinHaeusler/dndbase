@@ -1,6 +1,7 @@
 package org.dndbase.item
 
 import jakarta.validation.constraints.Min
+import org.dndbase.ratelimit.RateLimited
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -12,6 +13,7 @@ class ItemRestController(
     private val itemService: ItemService,
 ) {
 
+    @RateLimited
     @GetMapping("/items")
     fun getAllItems(
         @RequestParam("orderBy", required = false, defaultValue = "name") orderBy: ItemOrderBy,

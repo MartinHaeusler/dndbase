@@ -28,6 +28,7 @@ dependencies {
 	implementation("ch.qos.logback:logback-classic:1.4.11")
 	implementation("com.google.guava:guava:32.1.2-jre")
 	implementation("org.apache.commons:commons-csv:1.10.0")
+	implementation("com.github.vladimir-bukhtoyarov:bucket4j-core:7.6.0")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.strikt:strikt-core:0.34.1")

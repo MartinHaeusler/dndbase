@@ -14,7 +14,7 @@ class ItemRestController(
 ) {
 
     @RateLimited
-    @GetMapping("/items")
+    @GetMapping("/api/items")
     fun getAllItems(
         @RequestParam("orderBy", required = false, defaultValue = "name") orderBy: ItemOrderBy,
         @RequestParam("orderDirection", required = false, defaultValue = "ascending") orderDirection: OrderDirection,

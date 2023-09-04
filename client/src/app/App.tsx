@@ -23,7 +23,8 @@ function App() {
       <div className={classNames('appFooter', 'noPrint')}>
         <span style={{ fontSize: '0.7em' }}>All data was collected from public websites.</span>
         <a href="mailto:feedback.dndbase@gmail.com?subject=Bug Report">
-          <FontAwesomeIcon icon={faBug} /> Report a bug
+          <FontAwesomeIcon icon={faBug} style={{ marginRight: '0.5em' }} />
+          Report a bug
         </a>
       </div>
     </div>

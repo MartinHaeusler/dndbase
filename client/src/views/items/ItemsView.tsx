@@ -13,6 +13,7 @@ import { ItemRenderer, Select } from '@blueprintjs/select';
 import {
   faBookOpen,
   faCoins,
+  faQuestionCircle,
   faSignature,
   faSort,
   faSortDown,
@@ -160,7 +161,7 @@ function ItemsView() {
       </div>
 
       <Dialog
-        className={Classes.DARK}
+        className={classNames('itemDetailsDialog', Classes.DARK)}
         title={`Item Details: ${currentItem?.name}`}
         isOpen={currentItem !== null}
         icon="info-sign"
@@ -169,7 +170,25 @@ function ItemsView() {
         <DialogBody>
           <ItemDetailsDisplay item={currentItem} />
         </DialogBody>
-        <DialogFooter actions={<Button intent="primary" text="Close" onClick={() => setCurrentItem(null)} />} />
+        <DialogFooter
+          children={
+            <span className="itemFeedback">
+              <a
+                href={`mailto:${encodeURIComponent('feedback.dndbase@gmail.com')}?subject=${encodeURIComponent(
+                  `Item Data on '${currentItem?.name}' (ID: ${currentItem?.id})`,
+                )}&body=${encodeURIComponent("Please specify what's wrong or missing:")}`}
+              >
+                <FontAwesomeIcon icon={faQuestionCircle} style={{ marginRight: '0.5em' }} />
+                Report wrong or missing information
+              </a>
+            </span>
+          }
+          actions={
+            <div className="itemDetailDialogFooter">
+              <Button intent="primary" text="Close" onClick={() => setCurrentItem(null)} />
+            </div>
+          }
+        />
       </Dialog>
 
       {isLoading ? (

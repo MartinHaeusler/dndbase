@@ -57,16 +57,6 @@ function ItemDetailsDisplay(props: ItemDetailsDisplayProps) {
         </Tag>
       </div>
       <span className="itemDescription">{item.description}</span>
-      <span className="itemFeedback">
-        <a
-          href={`mailto:${encodeURIComponent('feedback.dndbase@gmail.com')}?subject=${encodeURIComponent(
-            `Item Data on '${item.name}' (ID: ${item.id})`,
-          )}&body=${encodeURIComponent("Please specify what's wrong or missing:")}`}
-        >
-          <FontAwesomeIcon icon={faQuestionCircle} />
-          &nbsp; Report wrong or missing information
-        </a>
-      </span>
     </div>
   );
 }

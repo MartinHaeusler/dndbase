@@ -16,7 +16,7 @@ class StoreRestController(
 
     @RateLimited
     @ResponseBody
-    @GetMapping("/store/inventory")
+    @GetMapping("/api/store/inventory")
     fun getStoreInventory(
         @RequestParam("minNumberOfItems", defaultValue = "5") minNumberOfItems: Int,
         @RequestParam("maxNumberOfItems", defaultValue = "10") maxNumberOfItems: Int,

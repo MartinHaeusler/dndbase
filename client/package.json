@@ -2,6 +2,7 @@
   "name": "dndbase-client",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@blueprintjs/core": "^5.2.1",
     "@blueprintjs/icons": "^5.1.5",

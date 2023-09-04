@@ -1,12 +1,7 @@
-const SERVER_PORT = 8080;
-
-const SERVER_HOST = window.location.hostname;
-
-const PROTOCOL = window.location.protocol;
-
-export const SERVER_URL_HTTP = `${PROTOCOL}//${SERVER_HOST}:${SERVER_PORT}`;
-
-console.log('PROTOCOL: ', PROTOCOL);
+// we use a RELATIVE path here in order to ensure that we will
+// use the same protocol for our API requests which was used
+// to load the page (development: HTTP, production: HTTPS).
+export const SERVER_URL_HTTP = `/api`;
 
 export async function fetchGet(path: string, parameters: any = {}) {
   return fetch(`${SERVER_URL_HTTP}/${removePrefix(path, '/')}?${new URLSearchParams(parameters)}`, {

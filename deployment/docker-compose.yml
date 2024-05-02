@@ -1,0 +1,18 @@
+# This file needs to be synced to the deployment server!
+#
+# scp docker-compose.yml root@116.203.178.153:~/deployment/dndbase/docker-compose.yml
+
+services:
+  dndbase:
+    container_name: dndbase
+    image: dndbase:latest
+    restart: on-failure
+    # environment:
+    #   KEY: value
+    ports:
+    # "HOSTPORT:CONTAINERPORT"
+      - "80:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 300M

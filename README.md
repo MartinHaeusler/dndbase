@@ -38,9 +38,25 @@ both the server and the client.
 
 ## Publishing
 
-(Requires GCloud Authentication)
+(Requires SSH Credentials)
+
+On your development machine:
 
 ```shell
-docker tag dndbase:0.0.1-SNAPSHOT europe-west3-docker.pkg.dev/dndbase/dndbase/dndbase:latest
-docker push europe-west3-docker.pkg.dev/dndbase/dndbase/dndbase
+ # build the image
+ ./gradlew bootBuildImage
+
+ # transfer the image to the remote server
+ docker save dndbase:latest | bzip2 | ssh root@116.203.178.153 docker load
+```
+
+On the remote server:
+
+```shell
+ # switch to the DNDBase deployment directory
+ cd ~/deployment/dndbase
+ # shut down the previous version
+ docker compose down
+ # start the new version
+ docker compose up -d
 ```

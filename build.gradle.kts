@@ -65,6 +65,15 @@ val buildClient = tasks.create<YarnTask>("buildClient") {
     args = listOf("build")
 }
 
+tasks.bootBuildImage {
+    dependsOn += buildClient
+    imageName = "dndbase:latest"
+    environment.put("BPE_DELIM_JAVA_TOOL_OPTIONS", " ")
+    environment.put("BPE_APPEND_JAVA_TOOL_OPTIONS", "-XX:ReservedCodeCacheSize=50M")
+    environment.put("BPL_JVM_THREAD_COUNT", "60")
+    environment.put("BPE_OVERRIDE_BPL_JVM_THREAD_COUNT", "60")
+}
+
 tasks.bootJar.configure {
     dependsOn += buildClient
     this.metaInf {
